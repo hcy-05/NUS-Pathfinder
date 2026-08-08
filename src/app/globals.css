@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------------------------------------------------------------------------
+   NUS Pathfinder — design tokens
+
+   Neutral dark grey surfaces and grey text. Ordinary borders are grey and stay
+   quiet; NUS blue is spent only where it carries meaning — the active nav item,
+   the selected pathway, the current period, a live drop target, focus. If a box
+   is blue, something is true about it.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Surfaces — neutral dark grey, no blue cast. */
+  --color-ink: #1b1b1d;
+  --color-surface: #232326;
+  --color-raised: #2b2b2f;
+  --color-sunken: #161618;
+
+  /* Ordinary hairlines — grey, not blue. */
+  --color-line: #313136;
+  --color-line-soft: #292a2e;
+  --color-line-strong: #43434a;
+
+  /* Blue edges, used only for state that means something. */
+  --color-edge: #1e4776;
+  --color-edge-strong: #2a63a5;
+
+  /* Text — greys. */
+  --color-paper: #e4e4e7;
+  --color-muted: #a1a1aa;
+  --color-faint: #71717a;
+
+  /* NUS blue */
+  --color-nus: #003d7c;
+  --color-nus-lift: #0a5099;
+  --color-beacon: #4e9cf5;
+  --color-beacon-dim: #2a63a5;
+
+  /* Reserved for overdue deadlines only. */
+  --color-ember: #e8763a;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* next/font variables are scoped to <body>, so they must resolve at the point
+   of use rather than at :root. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-beacon);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-nus);
+    color: var(--color-paper);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Short uppercase mono label — semester tokens, eyebrows, code-like strings. */
+  .label-mono {
+    font-family: var(--font-jetbrains), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+
+  /* Every boxed surface: grey fill, blue edge. */
+  .card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
